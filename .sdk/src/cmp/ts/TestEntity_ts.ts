@@ -517,16 +517,23 @@ const generateLoad: OpGen = (ctx, step, index) => {
     Content(`    const ${srcdatavar} = Object.values(setup.data.existing.${entity.name})[0] as any
 `)
   }
+  Content(`    const ${matchvar}: any = {}
+`)
+  // A nested resource needs its parent parameters as well as its own id.
+  // The flow's match map names their fixture references. Preserve those
+  // bindings, then use the source record's id to load the same record.
+  each(step.m, (mi: any) => {
+    Content(`    ${matchvar}[${JSON.stringify(mi.key$)}] = setup.idmap[${JSON.stringify(mi.val$)}]
+`)
+  })
   if (hasEntId) {
-    Content(`    const ${matchvar}: any = {}
-    ${matchvar}.id = ${srcdatavar}.id
+    Content(`    ${matchvar}.id = ${srcdatavar}.id
     const ${datavar} = (await ${entvar}.load(${matchvar})).data()
     assert(${datavar}.id === ${srcdatavar}.id)
 `)
   }
   else {
-    Content(`    const ${matchvar}: any = {}
-    const ${datavar} = (await ${entvar}.load(${matchvar})).data()
+    Content(`    const ${datavar} = (await ${entvar}.load(${matchvar})).data()
     assert(null != ${datavar})
 `)
   }

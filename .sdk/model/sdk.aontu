@@ -6,7 +6,7 @@
 
 name: 'mabe-mouser'
 origin: 'jwm-dev'
-def: 'openapi-source.json'
+def: 'openapi-sdk.json'
 
 
 # API Information

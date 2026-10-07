@@ -161,6 +161,16 @@ class TestFeature extends BaseFeature {
 
       function respond(status: number, data?: any, res?: any) {
         const payload = envelope(data)
+        // A declared SSE endpoint must exercise the same readable body and
+        // decoding path as the real transport, including its Accept header.
+        if (status >= 200 && status < 300 && 'text/event-stream' === ctx.point?.response?.media) {
+          return new globalThis.Response(new ReadableStream({
+            start(controller) {
+              controller.enqueue(new TextEncoder().encode('data: ' + JSON.stringify(payload) + '\n\n'))
+              controller.close()
+            },
+          }), { status, headers: { 'content-type': 'text/event-stream' } })
+        }
         const out = merge([
           {
             status,
@@ -445,6 +455,5 @@ export {
   ownIdField,
   mintId,
 }
-
 
 

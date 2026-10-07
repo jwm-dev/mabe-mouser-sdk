@@ -55,6 +55,16 @@ const EntityTypes = cmp(function EntityTypes(props: any) {
       const fields = (ent.fields ? each(ent.fields) : [])
         .filter((f: any) => f.a !== false)
 
+      const sse = (ent.op?.load?.points || []).some((point: any) =>
+        'text/event-stream' === point.rs?.media)
+      if (sse) {
+        Content(`// Buffered JSON payloads from the SSE stream. For incremental delivery,
+// use the entity's stream('load', { reqmatch: ... }) async iterator.
+export type ${TypeName} = Array<Record<string, any>>
+
+`)
+      }
+      else {
       Content(`export interface ${TypeName} {
 `)
       fields.forEach((f: any) => {
@@ -65,6 +75,7 @@ const EntityTypes = cmp(function EntityTypes(props: any) {
       Content(`}
 
 `)
+      }
 
       const ops = ent.op || {}
       ;['load', 'list', 'create', 'update', 'patch', 'remove'].forEach((opname: string) => {
