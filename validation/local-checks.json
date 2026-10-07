@@ -1,0 +1,17 @@
+{
+  "date_utc": "2026-10-07",
+  "backend_commit": "27f495abb2f65435a1445fbb7b2aa859eb0696af",
+  "generation": "passed after documented Windows workaround",
+  "typescript_build": "passed",
+  "generated_offline_suite": {
+    "tests": 259,
+    "passed": 245,
+    "failed": 1,
+    "skipped": 13,
+    "failure": "FrameEntity basic generated fixture omits required file_id and filename path parameters"
+  },
+  "direct_api_checks": { "passed": 13, "failed": 0 },
+  "npm_audit_at_install": { "toolchain_vulnerabilities": 0, "target_vulnerabilities": 0 },
+  "privacy": "No credential-shaped strings, private machine paths, datasets or runtime logs found in proposed publication files",
+  "unrun": ["other language targets", "production service checks", "registry publishing", "full performance/security audit"]
+}

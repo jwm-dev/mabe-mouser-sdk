@@ -1,0 +1,27 @@
+{
+  "existing": {
+    "root_get": {
+      "ROOT_GET00": {
+        "id": "ROOT_GET00"
+      },
+      "ROOT_GET01": {
+        "id": "ROOT_GET01"
+      },
+      "ROOT_GET02": {
+        "id": "ROOT_GET02"
+      }
+    }
+  },
+  "new": {
+    "root_get": {
+      "root_get_ref01": {}
+    }
+  },
+  "requests": {
+    "GET /": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

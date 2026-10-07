@@ -1,0 +1,13 @@
+{
+  "files": [
+    "SUMMARY.md"
+  ],
+  "config": ".sdk/doc/qa/vale.ini",
+  "routes": {},
+  "quoted": {
+    "SUMMARY.md": [
+      "Backend for mouse behavior tracking visualization",
+      "Successful Response"
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+import { ActivityEntity } from './entity/ActivityEntity';
+import { BrowserEntity } from './entity/BrowserEntity';
+import { FileEntity } from './entity/FileEntity';
+import { FrameEntity } from './entity/FrameEntity';
+import { HeatmapEntity } from './entity/HeatmapEntity';
+import { OverviewEntity } from './entity/OverviewEntity';
+import { RootGetEntity } from './entity/RootGetEntity';
+import { SocialEntity } from './entity/SocialEntity';
+import { StreamEntity } from './entity/StreamEntity';
+export type * from './MabeMouserTypes';
+import { inspect } from 'node:util';
+import type { Context, Feature } from './types';
+import { config } from './Config';
+import { MabeMouserEntityBase } from './MabeMouserEntityBase';
+import { Utility } from './utility/Utility';
+import { BaseFeature } from './feature/base/BaseFeature';
+declare const stdutil: Utility;
+type DirectResult = {
+    ok: false;
+    err: any;
+    status?: undefined;
+    headers?: undefined;
+    data?: undefined;
+} | {
+    ok: boolean;
+    status: number;
+    headers: any;
+    data: any;
+    err?: any;
+};
+declare class MabeMouserSDK {
+    _mode: string;
+    _options: any;
+    _utility: Utility;
+    _features: Feature[];
+    _rootctx: Context;
+    constructor(options?: any);
+    options(): any;
+    utility(): any;
+    prepare(fetchargs?: any): Promise<any>;
+    direct(fetchargs?: any): Promise<DirectResult>;
+    _rawRequest(fetchargs?: any): Promise<DirectResult>;
+    graphql(query: string, variables?: any, ctrl?: any): Promise<any>;
+    Activity(entopts?: Record<string, any>): ActivityEntity;
+    Browser(entopts?: Record<string, any>): BrowserEntity;
+    File(entopts?: Record<string, any>): FileEntity;
+    Frame(entopts?: Record<string, any>): FrameEntity;
+    Heatmap(entopts?: Record<string, any>): HeatmapEntity;
+    Overview(entopts?: Record<string, any>): OverviewEntity;
+    RootGet(entopts?: Record<string, any>): RootGetEntity;
+    Social(entopts?: Record<string, any>): SocialEntity;
+    Stream(entopts?: Record<string, any>): StreamEntity;
+    static test(testoptsarg?: any, sdkoptsarg?: any): MabeMouserSDK;
+    tester(testopts?: any, sdkopts?: any): MabeMouserSDK;
+    toJSON(): {
+        name: string;
+    };
+    toString(): string;
+    [inspect.custom](): string;
+}
+declare const SDK: typeof MabeMouserSDK;
+export { stdutil, config, BaseFeature, MabeMouserEntityBase, MabeMouserSDK, SDK, };
+export type { DirectResult };

@@ -1,0 +1,27 @@
+{
+  "existing": {
+    "heatmap": {
+      "HEATMAP00": {
+        "id": "HEATMAP00"
+      },
+      "HEATMAP01": {
+        "id": "HEATMAP01"
+      },
+      "HEATMAP02": {
+        "id": "HEATMAP02"
+      }
+    }
+  },
+  "new": {
+    "heatmap": {
+      "heatmap_ref01": {}
+    }
+  },
+  "requests": {
+    "GET /api/analytics/heatmap": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

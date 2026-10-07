@@ -1,0 +1,27 @@
+{
+  "existing": {
+    "activity": {
+      "ACTIVITY00": {
+        "id": "ACTIVITY00"
+      },
+      "ACTIVITY01": {
+        "id": "ACTIVITY01"
+      },
+      "ACTIVITY02": {
+        "id": "ACTIVITY02"
+      }
+    }
+  },
+  "new": {
+    "activity": {
+      "activity_ref01": {}
+    }
+  },
+  "requests": {
+    "GET /api/analytics/activity": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

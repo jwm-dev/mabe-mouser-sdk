@@ -1,0 +1,33 @@
+{
+  "existing": {
+    "stream": {
+      "STREAM00": {
+        "file_id": "FILE01",
+        "filename": "FILENAME01",
+        "id": "STREAM00"
+      },
+      "STREAM01": {
+        "file_id": "FILE01",
+        "filename": "FILENAME01",
+        "id": "STREAM01"
+      },
+      "STREAM02": {
+        "file_id": "FILE01",
+        "filename": "FILENAME01",
+        "id": "STREAM02"
+      }
+    }
+  },
+  "new": {
+    "stream": {
+      "stream_ref01": {}
+    }
+  },
+  "requests": {
+    "GET /api/files/{lab}/{filename}/stream": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

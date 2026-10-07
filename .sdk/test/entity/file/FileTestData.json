@@ -1,0 +1,38 @@
+{
+  "existing": {
+    "file": {
+      "FILE00": {
+        "id": "FILE00",
+        "filename": "FILENAME01",
+        "lab": "LAB01"
+      },
+      "FILE01": {
+        "id": "FILE01",
+        "filename": "FILENAME01",
+        "lab": "LAB01"
+      },
+      "FILE02": {
+        "id": "FILE02",
+        "filename": "FILENAME01",
+        "lab": "LAB01"
+      }
+    }
+  },
+  "new": {
+    "file": {
+      "file_ref01": {}
+    }
+  },
+  "requests": {
+    "GET /api/files/{lab}/{filename}": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    },
+    "GET /api/files": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

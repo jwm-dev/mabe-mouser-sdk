@@ -1,0 +1,27 @@
+{
+  "existing": {
+    "overview": {
+      "OVERVIEW00": {
+        "id": "OVERVIEW00"
+      },
+      "OVERVIEW01": {
+        "id": "OVERVIEW01"
+      },
+      "OVERVIEW02": {
+        "id": "OVERVIEW02"
+      }
+    }
+  },
+  "new": {
+    "overview": {
+      "overview_ref01": {}
+    }
+  },
+  "requests": {
+    "GET /api/analytics/overview": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "checked_at_utc": "2026-10-07T13:21:51.091Z",
+  "node_version": "v24.21.0",
+  "fixture": "synthetic only: 24 tracking rows, 6 frames, 2 mice",
+  "checks": [
+    {
+      "name": "health",
+      "route": "/",
+      "result": "passed",
+      "evidence": {
+        "running": true,
+        "synthetic_data_exists": true
+      }
+    },
+    {
+      "name": "file listing",
+      "route": "/api/files",
+      "result": "passed",
+      "evidence": {
+        "files": 1
+      }
+    },
+    {
+      "name": "file frame range",
+      "route": "/api/files/{lab}/{filename}",
+      "result": "passed",
+      "evidence": {
+        "requested_frames": [
+          1,
+          2
+        ],
+        "total_frames": 6,
+        "mice": 2
+      }
+    },
+    {
+      "name": "single frame",
+      "route": "/api/files/{lab}/{filename}/frame/{frame_number}",
+      "result": "passed",
+      "evidence": {
+        "frame": 2,
+        "mice": 2,
+        "synthetic_coordinates_verified": true
+      }
+    },
+    {
+      "name": "SSE stream through generated load",
+      "route": "/api/files/{lab}/{filename}/stream",
+      "result": "failed",
+      "error_code": "response_content_type",
+      "http_status": 200
+    },
+    {
+      "name": "analytics overview",
+      "route": "/api/analytics/overview",
+      "result": "passed",
+      "evidence": {
+        "sessions": 1,
+        "frames": 6,
+        "mice": 2
+      }
+    },
+    {
+      "name": "analytics heatmap",
+      "route": "/api/analytics/heatmap",
+      "result": "passed",
+      "evidence": {
+        "points": 10,
+        "normalized_coordinates": true
+      }
+    },
+    {
+      "name": "analytics activity",
+      "route": "/api/analytics/activity",
+      "result": "passed",
+      "evidence": {
+        "sessions": 1,
+        "bins": 3,
+        "points": 3
+      }
+    },
+    {
+      "name": "analytics social",
+      "route": "/api/analytics/social",
+      "result": "passed",
+      "evidence": {
+        "nodes": 2,
+        "edges": 1,
+        "edge_weight": 1
+      }
+    },
+    {
+      "name": "analytics browser",
+      "route": "/api/analytics/browser",
+      "result": "passed",
+      "evidence": {
+        "sessions": 1,
+        "mice": 2
+      }
+    },
+    {
+      "name": "missing file 404",
+      "route": "/api/files/{lab}/{filename}",
+      "result": "passed",
+      "evidence": {
+        "http_status": 404
+      }
+    },
+    {
+      "name": "missing frame 404",
+      "route": "/api/files/{lab}/{filename}/frame/{frame_number}",
+      "result": "passed",
+      "evidence": {
+        "http_status": 404
+      }
+    },
+    {
+      "name": "invalid frame 422 through SDK direct",
+      "route": "/api/files/{lab}/{filename}/frame/{frame_number}",
+      "result": "passed",
+      "evidence": {
+        "http_status": 422
+      }
+    }
+  ],
+  "counts": {
+    "passed": 12,
+    "failed": 1,
+    "unrun": 0
+  }
+}

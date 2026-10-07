@@ -1,0 +1,27 @@
+{
+  "existing": {
+    "browser": {
+      "BROWSER00": {
+        "id": "BROWSER00"
+      },
+      "BROWSER01": {
+        "id": "BROWSER01"
+      },
+      "BROWSER02": {
+        "id": "BROWSER02"
+      }
+    }
+  },
+  "new": {
+    "browser": {
+      "browser_ref01": {}
+    }
+  },
+  "requests": {
+    "GET /api/analytics/browser": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

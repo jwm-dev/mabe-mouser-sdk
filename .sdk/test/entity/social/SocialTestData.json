@@ -1,0 +1,27 @@
+{
+  "existing": {
+    "social": {
+      "SOCIAL00": {
+        "id": "SOCIAL00"
+      },
+      "SOCIAL01": {
+        "id": "SOCIAL01"
+      },
+      "SOCIAL02": {
+        "id": "SOCIAL02"
+      }
+    }
+  },
+  "new": {
+    "social": {
+      "social_ref01": {}
+    }
+  },
+  "requests": {
+    "GET /api/analytics/social": {
+      "provenance": "operation-contract",
+      "version": 2,
+      "source": "openapi3"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "checked_at_utc": "2026-10-07T13:11:32.276944+00:00",
+  "base_url": "http://127.0.0.1:8765",
+  "fixture": "synthetic only, 24 tracking rows, 6 frames, 2 mice",
+  "checks": [
+    {
+      "name": "health",
+      "result": "passed"
+    },
+    {
+      "name": "file listing",
+      "result": "passed"
+    },
+    {
+      "name": "file frame range",
+      "result": "passed"
+    },
+    {
+      "name": "single frame",
+      "result": "passed"
+    },
+    {
+      "name": "SSE stream",
+      "result": "passed"
+    },
+    {
+      "name": "analytics overview",
+      "result": "passed"
+    },
+    {
+      "name": "analytics heatmap",
+      "result": "passed"
+    },
+    {
+      "name": "analytics activity",
+      "result": "passed"
+    },
+    {
+      "name": "analytics social",
+      "result": "passed"
+    },
+    {
+      "name": "analytics browser",
+      "result": "passed"
+    },
+    {
+      "name": "missing file 404",
+      "result": "passed"
+    },
+    {
+      "name": "missing frame 404",
+      "result": "passed"
+    },
+    {
+      "name": "invalid frame 422",
+      "result": "passed"
+    }
+  ]
+}
