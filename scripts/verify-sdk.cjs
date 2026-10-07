@@ -83,16 +83,24 @@ async function main() {
     assert.deepEqual(value.mice['1'].points, [[32, 39], [34, 41]])
     return { frame: 2, mice: 2, synthetic_coordinates_verified: true }
   })
-  await check('SSE stream through generated load', '/api/files/{lab}/{filename}/stream', async () => {
-    // This invokes the generated Stream entity unchanged. If it rejects the
-    // actual event-stream content type, that is a failure recorded below.
-    const value = await data('Stream', { ...nested, chunk_size: 2 })
-    assert.ok(Array.isArray(value.events), 'Expected parsed SSE events')
-    assert.equal(value.events[0].metadata.total_frames, 6)
-    assert.deepEqual(value.events.slice(1).flatMap(event => event.frames.map(frame => frame.frame_number)),
+  await check('incremental SSE stream through generated entity', '/api/files/{lab}/{filename}/stream', async () => {
+    const events = []
+    for await (const event of sdk.Stream().stream('load', {
+      reqmatch: { ...nested, chunk_size: 2 },
+    })) events.push(event)
+    assert.equal(events.length, 4)
+    assert.equal(events[0].metadata.total_frames, 6)
+    assert.equal(events[0].metadata.num_mice, 2)
+    assert.deepEqual(events.slice(1).map(event => event.frames.length), [2, 2, 2])
+    assert.deepEqual(events.slice(1).map(event => event.complete), [false, false, true])
+    assert.deepEqual(events.slice(1).flatMap(event => event.frames.map(frame => frame.frame_number)),
       [0, 1, 2, 3, 4, 5])
-    assert.equal(value.events.at(-1).complete, true)
-    return { frames: 6, complete: true }
+    assert.deepEqual(events[2].frames[0].mice['1'].points, [[32, 39], [34, 41]])
+    const buffered = await data('Stream', { ...nested, chunk_size: 2 })
+    assert.ok(Array.isArray(buffered), 'Expected buffered SSE payload array')
+    assert.deepEqual(buffered, events)
+    return { events: 4, frames: 6, chunks: 3, mice: 2, complete: true,
+      buffered_load_and_incremental_stream: true }
   })
   await check('analytics overview', '/api/analytics/overview', async () => {
     const value = await data('Overview')
@@ -133,6 +141,8 @@ async function main() {
     expectEntityError('File', { ...file, filename: 'missing.parquet' }, 404))
   await check('missing frame 404', '/api/files/{lab}/{filename}/frame/{frame_number}', () =>
     expectEntityError('Frame', { ...nested, id: 999 }, 404))
+  await check('SSE endpoint preserves JSON 404', '/api/files/{lab}/{filename}/stream', () =>
+    expectEntityError('Stream', { ...nested, filename: 'missing.parquet' }, 404))
   await check('invalid frame 422 through SDK direct', '/api/files/{lab}/{filename}/frame/{frame_number}', async () => {
     const value = await sdk.direct({ path: fileRoute + '/frame/invalid' })
     assert.equal(value.ok, false)

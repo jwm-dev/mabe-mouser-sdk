@@ -76,6 +76,9 @@ describe('FrameEntity', async () => {
     // LOAD
     const frame_ref01_ent = client.Frame()
     const frame_ref01_match_dt0: any = {}
+    frame_ref01_match_dt0["file_id"] = setup.idmap["file01"]
+    frame_ref01_match_dt0["filename"] = setup.idmap["filename01"]
+    frame_ref01_match_dt0["id"] = setup.idmap["frame01"]
     frame_ref01_match_dt0.id = frame_ref01_data.id
     const frame_ref01_data_dt0 = (await frame_ref01_ent.load(frame_ref01_match_dt0)).data()
     assert(frame_ref01_data_dt0.id === frame_ref01_data.id)

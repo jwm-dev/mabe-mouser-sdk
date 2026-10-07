@@ -65,8 +65,9 @@ export interface Social {
 export interface SocialLoadMatch {
 }
 
-export interface Stream {
-}
+// Buffered JSON payloads from the SSE stream. For incremental delivery,
+// use the entity's stream('load', { reqmatch: ... }) async iterator.
+export type Stream = Array<Record<string, any>>
 
 export interface StreamLoadMatch {
   file_id: string

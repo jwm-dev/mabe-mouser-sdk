@@ -1,0 +1,43 @@
+{
+  "checked_at_utc": "2026-10-07T14:10:18.8254449Z",
+  "phase": "separately authorized post-submission maintenance",
+  "node_version": "v24.21.0",
+  "npm_version": "11.19.0",
+  "backend_commit": "27f495abb2f65435a1445fbb7b2aa859eb0696af",
+  "generation": "passed",
+  "typescript_build": "passed",
+  "offline_suite": {
+    "skipped": 13,
+    "total": 272,
+    "passed": 259,
+    "newly_skipped": 0,
+    "failed": 0
+  },
+  "generator_regressions": {
+    "passed": 2,
+    "skipped": 0,
+    "failed": 0
+  },
+  "live_sdk": {
+    "passed": 14,
+    "unrun": 0,
+    "failed": 0
+  },
+  "direct_api": {
+    "passed": 13,
+    "failed": 0
+  },
+  "git_diff_check": "passed",
+  "hosted_ci": "verified separately after publication",
+  "timing": {
+    "approximate_start_utc": "2026-10-07T13:52:00Z",
+    "local_completion_utc": "2026-10-07T14:09:00Z",
+    "original_assessment_timebox": "unchanged historical record",
+    "ai_wall_time": "approximately 17 minutes through local verification",
+    "human_interactive_implementation": "none observed; request/review time not measured"
+  },
+  "repeated_generation": {
+    "result": "passed",
+    "identical_model_source_test_files": 143
+  }
+}

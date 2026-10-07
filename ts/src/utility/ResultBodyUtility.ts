@@ -1,5 +1,6 @@
 
 import { Context } from '../types'
+import { readJsonSse } from './SseUtility'
 
 
 const PREVIEW_LENGTH = 160
@@ -19,6 +20,31 @@ async function resultBody(ctx: Context) {
   const result = ctx.result
 
   if (result) {
+    // Successful SSE responses use the readable body directly. HTTP errors
+    // still use their JSON body and retain the original request status error.
+    const media = headerValue(result.headers, 'content-type').split(';')[0].trim().toLowerCase()
+    if (null == result.err && 'text/event-stream' === media) {
+      if ('function' !== typeof response?.body?.getReader) {
+        throw ctx.error('response_sse_body', 'Expected an SSE readable response body')
+      }
+      const iterate = () => readJsonSse(response.body, (code, message) => ctx.error(code, message))
+      if (ctx.ctrl.stream) {
+        // EntityBase.stream uses this iterator without buffering the body.
+        ;(result as any).stream = iterate
+        ;(result as any).streaming = true
+      }
+      else {
+        const events = []
+        for await (const event of iterate()) events.push(event)
+        result.body = events
+      }
+      return result
+    }
+
+    if (null == result.err && 'text/event-stream' === ctx.point?.response?.media) {
+      throw ctx.error('response_content_type', 'Expected text/event-stream response')
+    }
+
     if (response && response.json && null != response.body) {
       try {
         const json = await response.json()

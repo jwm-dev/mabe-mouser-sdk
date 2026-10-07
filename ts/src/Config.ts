@@ -722,8 +722,8 @@ class Config {
                 ]
               },
               "response": {
-                "kind": "json",
-                "media": "application/json"
+                "kind": "raw",
+                "media": "text/event-stream"
               }
             }
           ]

@@ -65,8 +65,8 @@ main: kit: entity: stream: {
             }
           }
           rs: {
-            kind: "json"
-            media: "application/json"
+            kind: "raw"
+            media: "text/event-stream"
           }
           s: [
             {

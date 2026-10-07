@@ -1,7 +1,7 @@
 {
   "NAME": "MABE-MOUSER",
   "Name": "MabeMouser",
-  "def": "openapi-source.json",
+  "def": "openapi-sdk.json",
   "main": {
     "api": {
       "entity": {},
@@ -793,8 +793,8 @@
                     }
                   },
                   "rs": {
-                    "kind": "json",
-                    "media": "application/json"
+                    "kind": "raw",
+                    "media": "text/event-stream"
                   },
                   "s": [
                     {

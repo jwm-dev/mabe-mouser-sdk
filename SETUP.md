@@ -15,9 +15,13 @@ cd ../ts
 npm ci
 npm run build
 npm test
+cd ..
+node --test "scripts/*.test.cjs"
 ```
 
 The workaround script does nothing on other platforms. On Windows it validates and patches the known `@tabnas/multisource@0.5.8` native-filesystem path issue in ignored dependencies. It does not modify generated SDK source. The scaffold's incompatible `apidef` pin was updated to `~8.24.0`; the lockfile records the installed toolchain.
+
+Generation derives `.sdk/def/openapi-sdk.json` from the preserved original schema using `.sdk/build/prepare-openapi.cjs`. This corrects only the stream route's successful response media to `text/event-stream`, matching the backend's actual behavior. The generator templates include the SSE decoder and regression tests; regenerating retains these fixes. CI performs this regeneration before its offline checks.
 
 The first scaffold command was:
 
@@ -49,4 +53,6 @@ node scripts/verify-sdk.cjs
 
 The server binds only to loopback. The fixtures are invented; no competition data, research records, Kaggle credentials, or paid services are needed. Do not use the backend's `run.py`, which downloads competition data. Backend version and dependencies are pinned for repeatability; other platforms were not locally tested.
 
-The generated client accepts `server: { base: 'http://127.0.0.1:8765' }`. The API's original OpenAPI document omits a server URL and most response schemas. Some semantic names differ from raw API parameters: `Frame().load({ file_id: 'synthetic_lab', filename: 'synthetic_video.parquet', id: 2 })` addresses frame 2; `File().load({ lab: 'synthetic_lab', filename: 'synthetic_video.parquet', start_frame: 1, max_frame: 2 })` addresses a range. See the experience report for verified results and remaining failures.
+The generated client accepts `server: { base: 'http://127.0.0.1:8765' }`. The API's original OpenAPI document omits a server URL and most response schemas. Some semantic names differ from raw API parameters: `Frame().load({ file_id: 'synthetic_lab', filename: 'synthetic_video.parquet', id: 2 })` addresses frame 2; `File().load({ lab: 'synthetic_lab', filename: 'synthetic_video.parquet', start_frame: 1, max_frame: 2 })` addresses a range.
+
+`await sdk.Stream().load({ file_id, filename, chunk_size: 2 })` returns an entity whose `.data()` contains the buffered JSON event payloads. For incremental delivery, use `for await (const event of sdk.Stream().stream('load', { reqmatch: { file_id, filename, chunk_size: 2 } }))`. The decoder supports UTF-8 split across network chunks, SSE line framing and cancellation. It rejects malformed JSON and API error payloads; HTTP errors retain their status. This finite stream reader does not reconnect automatically. See EXPERIENCE.md for the original submission and separately dated maintenance results.

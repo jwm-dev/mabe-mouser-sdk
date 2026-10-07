@@ -42,8 +42,7 @@ export interface Social {
 }
 export interface SocialLoadMatch {
 }
-export interface Stream {
-}
+export type Stream = Array<Record<string, any>>;
 export interface StreamLoadMatch {
     file_id: string;
     filename: string;

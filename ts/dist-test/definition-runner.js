@@ -16,7 +16,13 @@ const RAW_TEXT = 'definition-test-body';
 const RAW_BYTES = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0xff]);
 async function runDefinitionPoint(SDK, point) {
     const sent = [];
-    const body = null == point.sample ? null : JSON.stringify(point.sample);
+    const sse = point.status >= 200 && point.status < 300 && point.status !== 204 &&
+        (point.responseMedia || []).some((media) => 'text/event-stream' === baseMedia(media));
+    // An SSE example array describes the ordered payloads. No example means an
+    // empty event stream, whose buffered result must be an empty array.
+    const events = null == point.sample ? [] : Array.isArray(point.sample) ? point.sample : [point.sample];
+    const body = sse ? events.map((payload) => 'data: ' + JSON.stringify(payload) + '\n\n').join('') :
+        null == point.sample ? null : JSON.stringify(point.sample);
     const client = new SDK({
         apikey: KEY,
         base: BASE,
@@ -26,7 +32,7 @@ async function runDefinitionPoint(SDK, point) {
                 sent.push({ url: new URL(String(url)), init: init || {} });
                 return new Response(204 === point.status ? null : body, {
                     status: point.status,
-                    headers: { 'content-type': 'application/json' },
+                    headers: { 'content-type': sse ? 'text/event-stream; charset=utf-8' : 'application/json' },
                 });
             },
         },
@@ -145,6 +151,12 @@ async function runDefinitionPoint(SDK, point) {
     }
     if (null != error) {
         throw error;
+    }
+    if (sse) {
+        const buffered = 'function' === typeof result?.data ? result.data() : result;
+        (0, strict_1.default)(Array.isArray(buffered), 'SSE response did not produce buffered payloads');
+        strict_1.default.deepEqual(buffered, events, 'SSE payloads do not match the complete definition example');
+        return;
     }
     if (null == point.sample) {
         return;

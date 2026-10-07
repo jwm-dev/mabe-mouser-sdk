@@ -1,11 +1,26 @@
 import { test, describe } from 'node:test'
 import assert from 'node:assert/strict'
-import { readSseEvents, readJsonSse } from '../../src/utility/SseUtility'
-import { ProjectNameSDK } from '../../..'
+import { readSseEvents, readJsonSse } from '../../dist/utility/SseUtility'
+import { ProjectNameSDK } from '../..'
+import { runDefinitionPoint, type DefinitionPoint } from '../definition-runner'
 
 const encode = (text: string) => new TextEncoder().encode(text)
 const failure = (code: string, message: string) => Object.assign(new Error(message), { code })
 const match = { file_id: 'synthetic_lab', filename: 'synthetic_video.parquet', chunk_size: 2 }
+const definition: DefinitionPoint = {
+  entity: 'stream', accessor: 'Stream', op: 'load', method: 'GET',
+  path: '/api/files/{lab}/{filename}/stream',
+  args: [
+    { name: 'file_id', wire: 'lab', value: match.file_id },
+    { name: 'filename', wire: 'filename', value: match.filename },
+  ],
+  select: {}, responseMedia: ['text/event-stream'], query: [], auth: null,
+  status: 200, idField: 'id',
+  sample: [
+    { metadata: { total_frames: 2, num_mice: 1 } },
+    { frames: [{ frame_number: 0 }, { frame_number: 1 }], complete: true },
+  ],
+}
 
 function body(chunks: Uint8Array[], onCancel?: () => void) {
   return new ReadableStream<Uint8Array>({
@@ -26,13 +41,13 @@ async function collect<T>(source: AsyncIterable<T>) {
 
 describe('SSE', () => {
   test('frames split UTF-8 bytes, CRLF, multiline data, comments and persistent IDs', async () => {
-    const wire = encode('\ufeff: keepalive\r\nid: first\r\nevent: metadata\r\ndata: {"name":"møuse",\r\ndata: "frames":6}\r\n\r\nretry: 1000\rid: invalid\0id\rdata:{"complete":true}\r\r')
+    const wire = encode('\ufeff: keepalive\r\nid: first\r\nevent: metadata\r\ndata: {"name":"møuse🐭",\r\ndata: "frames":6}\r\n\r\nretry: 1000\rid: invalid\0id\rdata:{"complete":true}\r\r')
     const events = await collect(readSseEvents(body(Array.from(wire, byte => Uint8Array.of(byte)))))
     assert.deepEqual(events, [
-      { event: 'metadata', id: 'first', data: '{"name":"møuse",\n"frames":6}' },
+      { event: 'metadata', id: 'first', data: '{"name":"møuse🐭",\n"frames":6}' },
       { event: 'message', id: 'first', data: '{"complete":true}' },
     ])
-    assert.equal(JSON.parse(events[0].data).name, 'møuse')
+    assert.equal(JSON.parse(events[0].data).name, 'møuse🐭')
   })
 
   test('requires the terminating blank line and ignores field-only events', async () => {
@@ -69,7 +84,7 @@ describe('SSE', () => {
   test('generated entity yields metadata before the final network chunk arrives', { timeout: 5000 }, async () => {
     let controller: ReadableStreamDefaultController<Uint8Array>
     const source = new ReadableStream<Uint8Array>({ start(value) { controller = value } })
-    const client = new ProjectNameSDK({ system: { fetch: async (_url: any, options: any) => {
+    const client = new ProjectNameSDK({ server: { base: 'http://sse.test' }, system: { fetch: async (_url: any, options: any) => {
       assert.equal(options.headers.accept, 'text/event-stream')
       return new Response(source, { headers: { 'content-type': 'text/event-stream; charset=utf-8' } })
     } } })
@@ -84,7 +99,7 @@ describe('SSE', () => {
   })
 
   test('normal generated load buffers the JSON SSE payloads', async () => {
-    const client = new ProjectNameSDK({ system: { fetch: async () => new Response(
+    const client = new ProjectNameSDK({ server: { base: 'http://sse.test' }, system: { fetch: async () => new Response(
       body([encode('data: {"metadata":{"total_frames":6}}\n\ndata: {"frames":[0,1],"complete":true}\n\n')]),
       { headers: { 'content-type': 'text/event-stream' } },
     ) } })
@@ -93,13 +108,13 @@ describe('SSE', () => {
   })
 
   test('wrong media type on the declared SSE route is rejected', async () => {
-    const client = new ProjectNameSDK({ system: { fetch: async () => new Response('{}',
+    const client = new ProjectNameSDK({ server: { base: 'http://sse.test' }, system: { fetch: async () => new Response('{}',
       { headers: { 'content-type': 'application/json' } }) } })
     await assert.rejects(client.Stream().load(match), (error: any) => error.code === 'response_content_type')
   })
 
   test('SSE route preserves JSON HTTP errors and their status', async () => {
-    const client = new ProjectNameSDK({ system: { fetch: async () => new Response('{"detail":"Missing file"}',
+    const client = new ProjectNameSDK({ server: { base: 'http://sse.test' }, system: { fetch: async () => new Response('{"detail":"Missing file"}',
       { status: 404, headers: { 'content-type': 'application/json' } }) } })
     await assert.rejects(client.Stream().load(match), (error: any) => error.status === 404)
   })
@@ -111,5 +126,26 @@ describe('SSE', () => {
     const loaded = await client.Stream().load(match)
     assert.equal(Array.isArray(loaded.data()), true)
     assert.equal(loaded.data()[0].complete, true)
+  })
+
+  test('definition runner verifies complete buffered SSE sample payloads', async () => {
+    await runDefinitionPoint(ProjectNameSDK, definition)
+  })
+
+  test('definition runner rejects dropped metadata or frames', async () => {
+    class IncompleteSDK extends ProjectNameSDK {
+      Stream(options?: any): any {
+        const entity = super.Stream(options)
+        const load = entity.load.bind(entity)
+        entity.load = async (...args: any[]) => {
+          const loaded = await (load as any)(...args)
+          loaded.data(loaded.data().slice(1))
+          return loaded
+        }
+        return entity
+      }
+    }
+    await assert.rejects(runDefinitionPoint(IncompleteSDK, definition),
+      (error: any) => error.code === 'ERR_ASSERTION' && /SSE payloads/.test(error.message))
   })
 })

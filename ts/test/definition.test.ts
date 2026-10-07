@@ -279,7 +279,7 @@ const PLAN: any[] = [
     "headers": [],
     "cookies": [],
     "responseMedia": [
-      "application/json"
+      "text/event-stream"
     ],
     "query": [
       "start_frame",
