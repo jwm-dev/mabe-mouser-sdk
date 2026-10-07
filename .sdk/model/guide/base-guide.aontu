@@ -1,0 +1,71 @@
+# Generated from the API definition and overwritten on every build: do not
+# edit this file. Put customizations in the guide entry file, which includes
+# this one and overrides its defaults:
+#   guide.aontu
+
+guide: {
+  metrics: count: entity: 9
+  metrics: count: path: 10
+  metrics: count: method: 10
+
+  entity: activity: {
+    path: "/api/analytics/activity": {
+      op: load: method: *GET
+    }
+  }
+
+  entity: browser: {
+    path: "/api/analytics/browser": {
+      op: load: method: *GET
+    }
+  }
+
+  entity: file: {
+    path: "/api/files": {
+      op: load: method: *GET
+    }
+    path: "/api/files/{lab}/{filename}": {
+      op: load: method: *GET
+    }
+  }
+
+  entity: frame: {
+    path: "/api/files/{lab}/{filename}/frame/{frame_number}": {
+      rename: param: "frame_number": *"id"
+      rename: param: "lab": *"file_id"
+      op: load: method: *GET
+    }
+  }
+
+  entity: heatmap: {
+    path: "/api/analytics/heatmap": {
+      op: load: method: *GET
+    }
+  }
+
+  entity: overview: {
+    path: "/api/analytics/overview": {
+      op: load: method: *GET
+    }
+  }
+
+  entity: root_get: {
+    path: "/": {
+      op: load: method: *GET
+    }
+  }
+
+  entity: social: {
+    path: "/api/analytics/social": {
+      op: load: method: *GET
+    }
+  }
+
+  entity: stream: {
+    path: "/api/files/{lab}/{filename}/stream": {
+      rename: param: "lab": *"file_id"
+      op: load: method: *GET
+    }
+  }
+
+}

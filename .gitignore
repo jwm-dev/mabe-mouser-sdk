@@ -1,0 +1,28 @@
+# Local config / secrets
+*.local.*
+*.local
+
+# Dependencies (no trailing slash: also ignores node_modules SYMLINKS, e.g.
+# ts/node_modules -> shared tree, which a dir-only rule leaves tracked)
+node_modules
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+
+# Editor
+*~
+*.swp
+
+# Local validation and tool state
+.jostraca/
+.sdk/model/.model-config/*.json
+.sdk/model/.model.json
+validation/synthetic-data/
+validation/.venv/
+__pycache__/
+*.pid
+

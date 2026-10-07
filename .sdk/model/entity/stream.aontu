@@ -1,0 +1,105 @@
+# Entity: stream
+
+main: kit: entity: stream: {
+
+  alias: field: {}
+
+  name: "stream"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/files/{lab}/{filename}/stream"
+            source: "openapi3"
+            version: 2
+          }
+          g: {
+            params: [
+              {
+                k: "param"
+                n: "file_id"
+                or: "lab"
+                r: true
+                t: "`$STRING`"
+              }
+              {
+                k: "param"
+                n: "filename"
+                or: "filename"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
+            query: [
+              {
+                ex: 100
+                k: "query"
+                n: "chunk_size"
+                or: "chunk_size"
+                r: false
+                t: "`$INTEGER`"
+              }
+              {
+                ex: 0
+                k: "query"
+                n: "start_frame"
+                or: "start_frame"
+                r: false
+                t: "`$INTEGER`"
+              }
+            ]
+          }
+          m: "GET"
+          o: "/api/files/{lab}/{filename}/stream"
+          q: {
+            exist: [
+              "file_id"
+              "filename"
+            ]
+          }
+          r: {
+            param: {
+              lab: "file_id"
+            }
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "files"
+            }
+            {
+              var: "file_id"
+            }
+            {
+              var: "filename"
+            }
+            {
+              lit: "stream"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  fields: {
+  }
+
+
+  relations: ancestors: [
+    [path("$.main.kit.entity.file")]
+  ]
+
+}

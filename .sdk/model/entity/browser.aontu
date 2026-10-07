@@ -1,0 +1,49 @@
+# Entity: browser
+
+main: kit: entity: browser: {
+
+  alias: field: {}
+
+  name: "browser"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/analytics/browser"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/api/analytics/browser"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "analytics"
+            }
+            {
+              lit: "browser"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  fields: {
+  }
+
+
+
+}

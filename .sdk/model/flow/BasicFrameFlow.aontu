@@ -1,0 +1,34 @@
+# BasicFrameFlow
+
+main: kit: flow: BasicFrameFlow:
+{
+  entity: "frame",
+  kind: "basic",
+  name: "BasicFrameFlow",
+  step: [
+    {
+      i: {
+        ref: "frame_ref01",
+        srcdatavar: "frame_ref01_data",
+        suffix: "_dt0"
+      }
+
+      m: {
+        file_id: "file01",
+        filename: "filename01",
+        id: "frame01"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-frame_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicFrameFlow"
+}

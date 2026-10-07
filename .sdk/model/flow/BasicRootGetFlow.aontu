@@ -1,0 +1,28 @@
+# BasicRootGetFlow
+
+main: kit: flow: BasicRootGetFlow:
+{
+  entity: "root_get",
+  kind: "basic",
+  name: "BasicRootGetFlow",
+  step: [
+    {
+      i: {
+        ref: "root_get_ref01",
+        srcdatavar: "root_get_ref01_data",
+        suffix: "_dt0"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-root_get_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicRootGetFlow"
+}

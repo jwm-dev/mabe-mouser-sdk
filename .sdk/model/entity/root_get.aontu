@@ -1,0 +1,38 @@
+# Entity: root_get
+
+main: kit: entity: root_get: {
+
+  alias: field: {}
+
+  name: "root_get"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  fields: {
+  }
+
+
+
+}

@@ -1,0 +1,49 @@
+# Entity: social
+
+main: kit: entity: social: {
+
+  alias: field: {}
+
+  name: "social"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/analytics/social"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/api/analytics/social"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "analytics"
+            }
+            {
+              lit: "social"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  fields: {
+  }
+
+
+
+}

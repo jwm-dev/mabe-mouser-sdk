@@ -1,0 +1,28 @@
+# BasicBrowserFlow
+
+main: kit: flow: BasicBrowserFlow:
+{
+  entity: "browser",
+  kind: "basic",
+  name: "BasicBrowserFlow",
+  step: [
+    {
+      i: {
+        ref: "browser_ref01",
+        srcdatavar: "browser_ref01_data",
+        suffix: "_dt0"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-browser_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicBrowserFlow"
+}

@@ -1,0 +1,25 @@
+# API Information
+
+
+main: {
+  kit: {
+    info: {
+      auth: false
+      description: "Backend for mouse behavior tracking visualization"
+      servers: [
+        {
+          url: "{base}"
+          variables: {
+            base: {
+              description: "The base URL of the API, which its definition does not name."
+            }
+          }
+        }
+      ]
+      summary: "Backend for mouse behavior tracking visualization"
+      title: "MABe Viewer API"
+      version: "1.0.0"
+    }
+  }
+}
+

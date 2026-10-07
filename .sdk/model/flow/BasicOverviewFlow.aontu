@@ -1,0 +1,28 @@
+# BasicOverviewFlow
+
+main: kit: flow: BasicOverviewFlow:
+{
+  entity: "overview",
+  kind: "basic",
+  name: "BasicOverviewFlow",
+  step: [
+    {
+      i: {
+        ref: "overview_ref01",
+        srcdatavar: "overview_ref01_data",
+        suffix: "_dt0"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-overview_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicOverviewFlow"
+}

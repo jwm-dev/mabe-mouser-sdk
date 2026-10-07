@@ -1,0 +1,28 @@
+# BasicFileFlow
+
+main: kit: flow: BasicFileFlow:
+{
+  entity: "file",
+  kind: "basic",
+  name: "BasicFileFlow",
+  step: [
+    {
+      i: {
+        ref: "file_ref01",
+        srcdatavar: "file_ref01_data",
+        suffix: "_dt0"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-file_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicFileFlow"
+}

@@ -1,0 +1,28 @@
+# BasicSocialFlow
+
+main: kit: flow: BasicSocialFlow:
+{
+  entity: "social",
+  kind: "basic",
+  name: "BasicSocialFlow",
+  step: [
+    {
+      i: {
+        ref: "social_ref01",
+        srcdatavar: "social_ref01_data",
+        suffix: "_dt0"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-social_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicSocialFlow"
+}

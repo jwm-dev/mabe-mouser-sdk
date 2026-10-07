@@ -1,0 +1,49 @@
+# Entity: overview
+
+main: kit: entity: overview: {
+
+  alias: field: {}
+
+  name: "overview"
+  op: {
+    load: {
+      name: "load"
+      points: [
+        {
+          co: {
+            id: "GET /api/analytics/overview"
+            source: "openapi3"
+            version: 2
+          }
+          m: "GET"
+          o: "/api/analytics/overview"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
+          s: [
+            {
+              lit: "api"
+            }
+            {
+              lit: "analytics"
+            }
+            {
+              lit: "overview"
+            }
+          ]
+          t: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+  fields: {
+  }
+
+
+
+}

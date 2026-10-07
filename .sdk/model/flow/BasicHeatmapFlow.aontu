@@ -1,0 +1,28 @@
+# BasicHeatmapFlow
+
+main: kit: flow: BasicHeatmapFlow:
+{
+  entity: "heatmap",
+  kind: "basic",
+  name: "BasicHeatmapFlow",
+  step: [
+    {
+      i: {
+        ref: "heatmap_ref01",
+        srcdatavar: "heatmap_ref01_data",
+        suffix: "_dt0"
+      }
+
+      o: "load",
+      v: [
+        {
+          apply: "TextFieldMark",
+          def: {
+            mark: "Mark01-heatmap_ref01"
+          }
+        }
+      ]
+    }
+  ],
+  "key$": "BasicHeatmapFlow"
+}
